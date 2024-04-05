@@ -1,3 +1,4 @@
+import Navigation from '@/components/Navigation'
 import './globals.css'
 import { Inter } from 'next/font/google'
 
@@ -14,7 +15,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 			<head>
 				<script src='https://kit.fontawesome.com/1c70c2797d.js'></script>
 			</head>
-			<body className={inter.className}>{children}</body>
+			<body>
+				<Navigation/>
+				<main className={inter.className}>{children}</main>
+			</body>
 		</html>
 	)
 }

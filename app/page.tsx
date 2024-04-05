@@ -1,7 +1,9 @@
+import jpg from '../public/img/hero-big.png'
+
 const Home = () => {
-	return <>
-  <h1 className="text-black text-3xl">Kamil Porada</h1>
-  </>
+	return <div>
+    
+  </div>
 }
 
 export default Home
