@@ -1,8 +1,9 @@
-import jpg from '../public/img/hero-big.png'
+import Header from "@/components/Header"
+
 
 const Home = () => {
 	return <div>
-    
+    <Header/>
   </div>
 }
 

@@ -26,7 +26,7 @@ const Navigation = () => {
 				isScrolled ? 'bg-white bg-opacity-60' : ''
 			}`}>
 			<Brand />
-            <Button>Zaloguj się</Button>
+            <Button className='text-xs sm:text-base'>Zaloguj się</Button>
 		</nav>
 	)
 }
