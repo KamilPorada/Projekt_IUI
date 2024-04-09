@@ -21,7 +21,14 @@ body {
 	background: #f3faff;
 }
 
+html {
+	scroll-behavior: smooth;
+	scroll-padding-top: 135px;
+}
+
 .blue-gradient {
 	background-color: rgba(46, 133, 254, 1);
 	background-image: radial-gradient(circle, rgba(46, 133, 254, 1) 0%, rgba(113, 183, 253, 1) 100%);
 }
+
+

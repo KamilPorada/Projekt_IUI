@@ -4,7 +4,7 @@ const Button: React.FC<{
 	disabled?: boolean
 	children: React.ReactNode
 }> = props => {
-	const buttonClassName = `px-6 py-2 mx-3 rounded-md font-semibold ${
+	const buttonClassName = `px-6 py-2 mx-3 text-xs sm:text-base rounded-md font-semibold ${
 		props.disabled ? 'bg-gray-500 cursor-not-allowed' : 'bg-mainColor hover:scale-105 transition duration-300'
 	} ${props.className}`
 
