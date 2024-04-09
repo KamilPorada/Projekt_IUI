@@ -1,7 +1,7 @@
 const SectionTitle: React.FC<{ title: string }> = props => {
     return (
       <div className="relative -z-10">
-        <h2 className="pb-1 text-center text-black text-xl md:text-2xl lg:text-3xl uppercase font-semibold">
+        <h2 className="pb-3 text-center text-black text-lg md:text-xl lg:text-2xl uppercase font-semibold">
           {props.title}
         </h2>
         <div className="flex flex-row justify-center items-center">

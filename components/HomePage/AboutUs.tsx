@@ -3,7 +3,7 @@ import doctorWithLaptop from '../../public/img/doctor-and-laptop.jpg'
 
 const AboutUs = () => {
 	return (
-		<div className='container my-20 lg:my-36' id='aboutus'>
+		<div className='container my-20 lg:my-28' id='aboutus'>
 			<SectionTitle title='O nas' />
 			<div className='flex flex-col md:flex-row justify-center items-center mt-8 lg:mt-16 font-thin text-sm text-black'>
                 <div>
