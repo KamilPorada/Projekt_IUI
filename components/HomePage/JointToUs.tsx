@@ -5,9 +5,9 @@ import { faMicrosoft } from '@fortawesome/free-brands-svg-icons'
 
 const JoinToUs = () => {
 	return (
-		<div className='relative bg-white w-full'>
+		<div className='relative bg-white w-full pb-16'>
 			<div className='container flex flex-col justify-center items-center'>
-				<h2 className='text-black mt-40 text-lg uppercase text-center font-bold sm:text-xl  md:text-2xl lg:text-3xl'>
+				<h2 className='text-black mt-20 lg:mt-40 text-lg uppercase text-center font-bold sm:text-xl  md:text-2xl lg:text-3xl'>
 					Dołącz do naszej społeczności!
 				</h2>
 				<p className='text-black my-7 font-thin text-xs text-center sm:text-sm lg:w-[700px]'>

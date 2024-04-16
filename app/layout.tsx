@@ -19,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 			<body>
 				<Navigation/>
 				<main className={inter.className}>{children}</main>
-				{/* <Footer/> */}
+				<Footer/>
 			</body>
 		</html>
 	)

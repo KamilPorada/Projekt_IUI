@@ -1,50 +1,54 @@
 'use client'
-import { Link } from "react-router-dom";
-import logo from '../public/img/logo-psk.png'
+
+import logoPSK from '../public/img/logo-psk.png'
+import footerBackground1 from '../public/img/footer-background1.png'
+import footerBackground2 from '../public/img/footer-background2.png'
+
+import Link from 'next/link'
 
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
+	const currentYear = new Date().getFullYear()
 
-  return (
-    <footer className="footer bg-dark-shade text-neutral-color">
-      <div className="container py-6">
-        <div className="flex flex-col items-center md:flex-row md:justify-between md:mb-4">
-          {/* <Link to={"https://uniwersytetradom.pl"} className="mb-2 md:mb-0">
-            <div className="footer__top-img mr-4">
-              <img
-                src={logo.src}
-                alt="Logo Uniwersytetu Radomskiego"
-                className="w-24 h-24 rounded-full bg-white"
-              />
-            </div>
-          </Link> */}
-          <div className="footer__top-text text-center md:text-left">
-            <p>
-              Strona została wykonana przez absolwentów{" "}
-              {/* <Link
-                to={"https://uniwersytetradom.pl"}
-                className="footer__top-text-link transition-colors duration-300 hover:text-accent-color-1"
-              >
-                Uniwersytetu Radomskiego
-              </Link> */}
-            </p>
-          </div>
-        </div>
-        <div className="flex flex-col items-center md:flex-row md:justify-between">
-          <div className="footer__bottom-authors flex gap-4 mb-2 md:mb-0">
-            <p>&copy; {currentYear}</p>
-            {/* <Link to={"https://github.com/Mateusz-Michalec"} className="transition-colors duration-300 hover:text-accent-color-1">
-              <p className="footer__bottom-authors-member">Mateusz Michalec</p>
-            </Link> */}
-            {/* <Link to={"https://github.com/KamilPorada"} className="transition-colors duration-300 hover:text-accent-color-1">
-              <p className="footer__bottom-authors-member">Kamil Porada</p>
-            </Link> */}
-          </div>
-          <p>Wszelkie prawa zastrzeżone</p>
-        </div>
-      </div>
-    </footer>
-  );
-};
+	return (
+		<footer className='flex flex-col justify-center items-center'>
+			<div className='w-full h-[200px] sm:h-[300px] lg:h-[400px] relative'>
+				<img src={footerBackground2.src} className='absolute top-0 left-0 w-full h-full' />
+				<div className='flex justify-center items-center w-[100px] h-[100px] sm:w-[200px] sm:h-[200px] lg:w-[300px] lg:h-[300px] rounded-full bg-white p-5 sm:p-1 lg:p-16 ring-1 ring-gray-600 absolute top-1/2 left-1/4 transform -translate-x-1/2 -translate-y-1/2 z-10'>
+					<img src={logoPSK.src} alt='Logo Politechniki Świętokrzyskiej' />
+				</div>
+				<div className='absolute top-1/2 left-2/3 transform -translate-x-1/2 -translate-y-1/2 z-10 w-1/2'>
+					<h3 className='text-black text-xs sm:text-sm lg:text-2xl text-center font-thin'>
+						Platrofrma <span className='font-normal'>Health Assistant</span> została wykonana przez studentów
+						<Link href='https://tu.kielce.pl/' className='hover:font-normal hover:text-mainColor transition font-normal'>
+							{' '}
+							Politechniki Świętokrzyskiej{' '}
+						</Link>{' '}
+						w ramach realizacji zajęć z przedmiotu Inteligentne Usługi Informatyczne
+					</h3>
+				</div>
+			</div>
+			<div className='flex flex-col justify-center items-center w-full bg-secondaryColor border-t border-white py-2'>
+				<div className='w-full px-1 flex flex-row justify-between sm:justify-around lg:justify-center lg:gap-16 items-center text-xs sm:text-sm lg:text-md gap-1 font-thin'>
+					<Link href='https://github.com/CezaryKretkowski'>
+						<p className='hover:font-normal hover:text-mainColor transition'>Cezary Kretkowski</p>
+					</Link>
+					<Link href='https://github.com/LMarcinEl'>
+						<p className='hover:font-normal hover:text-mainColor transition'>Marcin Lach</p>
+					</Link>
+					<Link href='https://github.com/KamilPorada'>
+						<p className='hover:font-normal hover:text-mainColor transition'>Kamil Porada</p>
+					</Link>
+					<Link href='https://github.com/KronosGP'>
+						<p className='hover:font-normal hover:text-mainColor transition'>Adam Rychlik</p>
+					</Link>
+				</div>
+				<div className='flex flex-col justify-center items-center text-xs sm:text-sm lg:text-md'>
+					<p>&copy; {currentYear}</p>
+					<p>Wszelkie prawa zastrzeżone</p>
+				</div>
+			</div>
+		</footer>
+	)
+}
 
-export default Footer;
+export default Footer

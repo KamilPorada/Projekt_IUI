@@ -2,6 +2,8 @@
 import { useState, useEffect } from 'react'
 import Brand from './UI/Brand'
 import Button from './UI/Button'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMicrosoft } from '@fortawesome/free-brands-svg-icons'
 
 const Navigation = () => {
 	const [isScrolled, setIsScrolled] = useState(false)
@@ -26,7 +28,9 @@ const Navigation = () => {
 				isScrolled ? 'bg-white bg-opacity-60' : ''
 			}`}>
 			<Brand />
-            <Button>Zaloguj się</Button>
+			<Button>
+				Zaloguj się <FontAwesomeIcon icon={faMicrosoft} className='ml-1'/>
+			</Button>
 		</nav>
 	)
 }
