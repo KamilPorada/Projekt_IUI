@@ -31,4 +31,16 @@ html {
 	background-image: radial-gradient(circle, rgba(46, 133, 254, 1) 0%, rgba(113, 183, 253, 1) 100%);
 }
 
+.hero-section{
+	position: relative;
+	height: 100%;
+	width: 100%;
+	background-image: url('../public/img/health-params.jpg');
+	background-size: cover;
+	background-attachment: fixed;
+	background-position: center;
+	z-index: 0;
+}
+
+
 

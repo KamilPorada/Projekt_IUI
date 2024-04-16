@@ -1,8 +1,7 @@
 'use client'
 
 import logoPSK from '../public/img/logo-psk.png'
-import footerBackground1 from '../public/img/footer-background1.png'
-import footerBackground2 from '../public/img/footer-background2.png'
+import footerBackground from '../public/img/footer-background.png'
 
 import Link from 'next/link'
 
@@ -12,8 +11,8 @@ const Footer = () => {
 	return (
 		<footer className='flex flex-col justify-center items-center'>
 			<div className='w-full h-[200px] sm:h-[300px] lg:h-[400px] relative'>
-				<img src={footerBackground2.src} className='absolute top-0 left-0 w-full h-full' />
-				<div className='flex justify-center items-center w-[100px] h-[100px] sm:w-[200px] sm:h-[200px] lg:w-[300px] lg:h-[300px] rounded-full bg-white p-5 sm:p-1 lg:p-16 ring-1 ring-gray-600 absolute top-1/2 left-1/4 transform -translate-x-1/2 -translate-y-1/2 z-10'>
+				<img src={footerBackground.src} className='absolute top-0 left-0 w-full h-full' />
+				<div className='flex justify-center items-center w-[100px] h-[100px] sm:w-[200px] sm:h-[200px] lg:w-[300px] lg:h-[300px] rounded-full bg-white p-5 sm:p-10 lg:p-16 ring-1 ring-gray-600 absolute top-1/2 left-1/4 transform -translate-x-1/2 -translate-y-1/2 z-10'>
 					<img src={logoPSK.src} alt='Logo Politechniki Świętokrzyskiej' />
 				</div>
 				<div className='absolute top-1/2 left-2/3 transform -translate-x-1/2 -translate-y-1/2 z-10 w-1/2'>
@@ -27,13 +26,13 @@ const Footer = () => {
 					</h3>
 				</div>
 			</div>
-			<div className='flex flex-col justify-center items-center w-full bg-secondaryColor border-t border-white py-2'>
-				<div className='w-full px-1 flex flex-row justify-between sm:justify-around lg:justify-center lg:gap-16 items-center text-xs sm:text-sm lg:text-md gap-1 font-thin'>
+			<div className='flex flex-col justify-center items-center gap-2 w-full bg-secondaryColor border-t border-white py-2'>
+				<div className='w-full px-1 flex flex-row justify-between sm:justify-around lg:justify-center lg:gap-16 items-center text-xs sm:text-sm lg:text-md gap-1 text-center'>
 					<Link href='https://github.com/CezaryKretkowski'>
 						<p className='hover:font-normal hover:text-mainColor transition'>Cezary Kretkowski</p>
 					</Link>
 					<Link href='https://github.com/LMarcinEl'>
-						<p className='hover:font-normal hover:text-mainColor transition'>Marcin Lach</p>
+						<p className='hover:text-mainColor transition'>Marcin Lach</p>
 					</Link>
 					<Link href='https://github.com/KamilPorada'>
 						<p className='hover:font-normal hover:text-mainColor transition'>Kamil Porada</p>
@@ -42,7 +41,7 @@ const Footer = () => {
 						<p className='hover:font-normal hover:text-mainColor transition'>Adam Rychlik</p>
 					</Link>
 				</div>
-				<div className='flex flex-col justify-center items-center text-xs sm:text-sm lg:text-md'>
+				<div className='flex flex-row justify-center items-center gap-3 text-xs sm:text-sm lg:text-md'>
 					<p>&copy; {currentYear}</p>
 					<p>Wszelkie prawa zastrzeżone</p>
 				</div>

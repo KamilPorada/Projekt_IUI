@@ -1,5 +1,5 @@
-import heroBig from '../../public/img/hero-big.png'
-import heroSmall from '../../public/img/hero-small.png'
+import heroBig from '../../public/img/hero-big.jpg'
+import heroSmall from '../../public/img/hero-small.jpg'
 import Button from '../UI/Button'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDownLong } from '@fortawesome/free-solid-svg-icons'
@@ -15,9 +15,9 @@ const Header = () => {
 			<img
 				src={heroBig.src}
 				alt='Hero Image Big'
-				className='hidden lg:block absolute top-0 left-0 w-full h-full object-cover object-center'
+				className='hidden lg:block absolute top-0 left-0 w-full h-full object-cover object-top'
 			/>
-			<div className='w-[250px] lg:w-[350px] absolute top-1/3 left-4 sm:left-14 md:left-36 lg:left-1/4'>
+			<div className='w-[250px] lg:w-[350px] absolute top-1/3 left-4 sm:left-14 md:left-36 lg:left-1/5'>
 				<h2 className='text-black uppercase font-bold md:text-lg lg:text-3xl xl:text-4xl mb-5 relative'>
 					<span className='absolute h-full w-1 bg-mainColor left-0 top-0 -ml-2'></span>
 					Health Assistant
