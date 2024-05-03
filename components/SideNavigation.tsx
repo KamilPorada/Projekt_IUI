@@ -76,7 +76,7 @@ function SideBar() {
 						</div>
 					</Link>
 					<div className='h-px w-full bg-blue-400'></div>
-					<Link href={'/'}>
+					<Link href={'/new-round'}>
 						<div className='flex flex-row justify-between items-center mt-2 text-white font-thin cursor-pointer transition hover:text-black'>
 							<p className='text-sm md:text-base'>Nowy obchód</p>
 							<FontAwesomeIcon icon={faSuitcaseMedical} />

@@ -7,6 +7,7 @@ import { graphConfig } from "./authConfig";
 export async function callMsGraph(accessToken) {
     const headers = new Headers();
     const bearer = `Bearer ${accessToken}`;
+    console.log(accessToken)
 
     headers.append("Authorization", bearer);
 
