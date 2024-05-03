@@ -2,13 +2,14 @@
 
 import logoPSK from '../public/img/logo-psk.png'
 import footerBackground from '../public/img/footer-background.png'
-
 import Link from 'next/link'
+import { useIsAuthenticated } from '@azure/msal-react'
 
 const Footer = () => {
 	const currentYear = new Date().getFullYear()
+	const isAuthenticated = useIsAuthenticated()
 
-	return (
+	return !isAuthenticated ? (
 		<footer className='flex flex-col justify-center items-center'>
 			<div className='w-full h-[200px] sm:h-[300px] lg:h-[400px] relative'>
 				<img src={footerBackground.src} className='absolute top-0 left-0 w-full h-full' />
@@ -18,7 +19,9 @@ const Footer = () => {
 				<div className='absolute top-1/2 left-2/3 transform -translate-x-1/2 -translate-y-1/2 z-10 w-1/2'>
 					<h3 className='text-black text-xs sm:text-sm lg:text-2xl text-center font-thin'>
 						Platrofrma <span className='font-normal'>Health Assistant</span> została wykonana przez studentów
-						<Link href='https://tu.kielce.pl/' className='hover:font-normal hover:text-mainColor transition font-normal'>
+						<Link
+							href='https://tu.kielce.pl/'
+							className='hover:font-normal hover:text-mainColor transition font-normal'>
 							{' '}
 							Politechniki Świętokrzyskiej{' '}
 						</Link>{' '}
@@ -47,7 +50,7 @@ const Footer = () => {
 				</div>
 			</div>
 		</footer>
-	)
+	) : null
 }
 
 export default Footer
