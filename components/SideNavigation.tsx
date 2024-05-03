@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
 	faBars,
 	faXmark,
+	faUserDoctor,
 	faUserPlus,
 	faUsers,
 	faSuitcaseMedical,
@@ -58,9 +59,11 @@ function SideBar() {
 						</div>
 						<h1 className='text-white ml-3 uppercase font-semibold lg:text-xl'>Health Assistant</h1>
 					</div>
-					<div className='flex flex-col justify-center items-center font-thin text-sm md:text-base'>
-						<p>Dzień dobry</p>
-						<p>dr {accounts[0]?.name}!</p>
+					<div className='flex flex-col justify-center items-center py-5 font-thin text-sm md:text-base'>
+						<div className='w-[100px] h-[100px] rounded-full ring-1 ring-white overflow-hidden'>
+							<FontAwesomeIcon icon={faUserDoctor} className='w-full h-full' />
+						</div>
+						<p className='uppercase mt-2'>dr {accounts[0]?.name}</p>
 					</div>
 					<Link href={'/'}>
 						<div className='flex flex-row justify-between items-center mt-2 text-white font-thin cursor-pointer transition hover:text-black'>
