@@ -21,30 +21,30 @@ const SideBar: React.FC = () => {
     const { instance, accounts } = useMsal();
     const currentYear = new Date().getFullYear();
 
-    useEffect(() => {
-        if (accounts.length > 0) {
-            instance.acquireTokenSilent({
-                scopes: ["User.Read"], 
-                account: accounts[0] as AccountInfo
-            }).then(response => {
-                const idToken = response.idToken;
+    // useEffect(() => {
+    //     if (accounts.length > 0) {
+    //         instance.acquireTokenSilent({
+    //             scopes: ["User.Read"], 
+    //             account: accounts[0] as AccountInfo
+    //         }).then(response => {
+    //             const idToken = response.idToken;
 
-                sessionStorage.setItem("idToken", idToken);
-                console.log(idToken);
+    //             sessionStorage.setItem("idToken", idToken);
+    //             console.log(idToken);
 
-                fetch("/api/auth", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${idToken}`
-                    },
-                    body: JSON.stringify({ token: idToken })
-                });
-            }).catch(error => {
-                console.error(error);
-            });
-        }
-    }, [accounts, instance]);
+    //             fetch("/api/auth", {
+    //                 method: "POST",
+    //                 headers: {
+    //                     "Content-Type": "application/json",
+    //                     "Authorization": `Bearer ${idToken}`
+    //                 },
+    //                 body: JSON.stringify({ token: idToken })
+    //             });
+    //         }).catch(error => {
+    //             console.error(error);
+    //         });
+    //     }
+    // }, [accounts, instance]);
 
     const handleMenuButton = (): void => {
         setIsMenuVisible(true);
@@ -110,7 +110,7 @@ const SideBar: React.FC = () => {
                         </div>
                     </Link>
                     <div className='h-px w-full bg-blue-400'></div>
-                    <Link href={'/'}>
+                    <Link href={'/health-chat'}>
                         <div className='flex flex-row justify-between items-center mt-2 text-white font-thin cursor-pointer transition hover:text-black'>
                             <p className='text-sm md:text-base'>Czat Health Bot</p>
                             <FontAwesomeIcon icon={faComments} />
