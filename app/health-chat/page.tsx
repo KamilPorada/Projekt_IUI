@@ -34,7 +34,7 @@ const HealthChat: React.FC = () => {
 		return `${day}.${month}.${year}`
 	}
 
-	const handleSendMessage = (): void => {
+	const handleSendMessage = async (): Promise<void> => {
 		if (messageText.trim() !== '') {
 			const newMessage: Message = {
 				user: `dr ${accounts[0]?.name}`,
@@ -42,8 +42,29 @@ const HealthChat: React.FC = () => {
 				time: getCurrentTime(),
 				text: messageText,
 			}
-			setMessages(messages.concat(newMessage)); 
-            setMessageText('');
+			setMessages(messages.concat(newMessage))
+			setMessageText('')
+
+			try {
+				const response = await fetch('http://localhost:8080/HealthBot/askQuestion', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({ question: messageText }),
+				})
+				const data = await response.json()
+				const botMessage: Message = {
+					user: 'Health Bot',
+					isBot: true,
+					time: getCurrentTime(),
+					text: data.answer,
+				}
+				console.log(data)
+				setMessages(messages.concat(newMessage, botMessage))
+			} catch (error) {
+				console.error('Error sending message to HealthBot:', error)
+			}
 		}
 	}
 
@@ -66,7 +87,12 @@ const HealthChat: React.FC = () => {
 				</div>
 				<div className='flex flex-col justify-start gap-4 w-full h-4/5 overflow-y-scroll text-black p-5'>
 					<p className='self-center text-xs font-thin'>{getCurrentDate()}</p>
-                    <MessageItem user='Health Bot' isBot={true} time={getCurrentTime()} text='Dzień dobry! Jak mogę Ci pomóc?' />
+					<MessageItem
+						user='Health Bot'
+						isBot={true}
+						time={getCurrentTime()}
+						text='Good morning! How can I help you?'
+					/>
 					{messages.map((message, index) => (
 						<MessageItem
 							key={index}
@@ -83,8 +109,7 @@ const HealthChat: React.FC = () => {
 						placeholder='Wpisz swoją wiadomość...'
 						value={messageText}
 						onChange={e => setMessageText(e.target.value)}
-						onKeyDown={handleKeyDown}
-					></textarea>
+						onKeyDown={handleKeyDown}></textarea>
 					<button
 						className='flex items-center justify-center w-12 h-12 ml-2 bg-mainColor text-white rounded-full transition-all hover:scale-110'
 						onClick={handleSendMessage}>

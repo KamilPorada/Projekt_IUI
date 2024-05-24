@@ -1,4 +1,5 @@
 'use client'
+
 import { useState, useEffect, FormEvent } from 'react'
 import NewRoundForm from '../../components/Forms/NewRoundForm'
 import { PublicClientApplication, AccountInfo } from '@azure/msal-browser'
@@ -20,7 +21,7 @@ function NewRoundPage() {
 	const router = useRouter()
 	const msalInstance = new PublicClientApplication(msalConfig)
 
-	const addRound = async (e: FormEvent<HTMLFormElement>) => {
+	const addRound = async (e: FormEvent<HTMLFormElement>, fileContent: File) => {
 		e.preventDefault()
 		setIsSubmitting(true)
 
@@ -32,40 +33,55 @@ function NewRoundPage() {
 
 		try {
 			const formData = new FormData()
-			if (userId) {
-				formData.append('userId', userId)
-			}
-			formData.append('date', round.date)
-			formData.append('time', round.time)
-			formData.append('audioFile', round.audioFile)
 
-			// formData.forEach((value, key) => {
-			//     console.log(key + ': ' + value)
-			//   })
+			formData.append('file', fileContent)
 
-			const response = await fetch('URL', {
+			const response = await fetch('http://localhost:8080/upload/audio', {
 				method: 'POST',
 				body: formData,
 			})
-			setError('')
 
-            toast.info('Pomyślnie przeanalizowano plik audio z obchodu!', {
-                position: 'top-center',
-            });
-            router.push('/round-summary')
+			const responseData = await response.json()
+			const roundData = {
+				responseData,
+				date: round.date,
+				time: round.time,
+			}
+
+			localStorage.setItem('roundData', JSON.stringify(roundData))
+
+			setError('')
 
 			if (response.ok) {
 				toast.success('Pomyślnie przeanalizowano plik audio z obchodu!', {
-                    position: 'top-center',
-                });
-				router.push('/')
+					position: 'top-center',
+				})
+				router.push('/round-summary')
 			} else {
 				throw new Error('Błąd podczas analizy pliku audio z obchodu')
 			}
 		} catch (error) {
 			console.log(error)
+			toast.error('Błąd podczas analizy pliku audio z obchodu', {
+				position: 'top-center',
+			})
 		} finally {
 			setIsSubmitting(false)
+		}
+	}
+
+	const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
+		e.preventDefault()
+
+		if (!round.audioFile) {
+			setError('Wybierz plik audio.')
+			return
+		}
+
+		try {
+			await addRound(e, round.audioFile)
+		} catch (error) {
+			console.error('Błąd podczas odczytu pliku:', error)
 		}
 	}
 
@@ -87,7 +103,13 @@ function NewRoundPage() {
 
 	return (
 		<section className='container py-20'>
-			<NewRoundForm round={round} setRound={setRound} submitting={submitting} handleSubmit={addRound} error={error} />
+			<NewRoundForm
+				round={round}
+				setRound={setRound}
+				submitting={submitting}
+				handleSubmit={handleFormSubmit}
+				error={error}
+			/>
 		</section>
 	)
 }
