@@ -50,7 +50,7 @@ function NewPatientPage() {
 				toast.success('Pomyślnie dodano nowego pacjenta!', {
 					position: 'top-center',
 				})
-				// router.push('/patient-summary')
+				router.push('/list-of-patients')
 			} else {
 				throw new Error('Błąd podczas dodawania pacjenta')
 			}

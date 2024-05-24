@@ -7,7 +7,7 @@ import React from 'react'
 interface NewPatientFormProps {
 	handleSubmit: (e: FormEvent<HTMLFormElement>, patientData: PatientData) => Promise<void>
 	submitting: boolean
-	patientData: PatientData // Dodajemy patientData do interfejsu propsów
+	patientData: PatientData 
 	setPatientData: Dispatch<SetStateAction<PatientData>>
 	error: string
 }
@@ -24,7 +24,6 @@ const NewPatientForm: React.FC<NewPatientFormProps> = ({ handleSubmit, submittin
 	const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 
-		// Walidacja danych
 		if (!patientData.firstName.trim() || !patientData.lastName.trim()) {
 			setError('Proszę podać zarówno imię, jak i nazwisko.')
 			return
@@ -35,7 +34,6 @@ const NewPatientForm: React.FC<NewPatientFormProps> = ({ handleSubmit, submittin
 			return
 		}
 
-		// Wyczyszczenie błędu przed wysłaniem formularza
 		setError('')
 
 		await handleSubmit(e, patientData)

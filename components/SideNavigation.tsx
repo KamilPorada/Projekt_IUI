@@ -96,7 +96,7 @@ const SideBar: React.FC = () => {
                         </div>
                     </Link>
                     <div className='h-px w-full bg-blue-400'></div>
-                    <Link href={'/'}>
+                    <Link href={'/list-of-patients'}>
                         <div className='flex flex-row justify-between items-center mt-2 text-white font-thin cursor-pointer transition hover:text-black'>
                             <p className='text-sm md:text-base'>Lista pacjentów</p>
                             <FontAwesomeIcon icon={faUsers} />
