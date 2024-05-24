@@ -89,7 +89,7 @@ const SideBar: React.FC = () => {
                         </div>
                         <p className='uppercase mt-2'>dr {accounts[0]?.name}</p>
                     </div>
-                    <Link href={'/'}>
+                    <Link href={'/new-patient'}>
                         <div className='flex flex-row justify-between items-center mt-2 text-white font-thin cursor-pointer transition hover:text-black'>
                             <p className='text-sm md:text-base'>Nowy pacjent</p>
                             <FontAwesomeIcon icon={faUserPlus} />
