@@ -10,8 +10,10 @@ const PatientItem: React.FC<{
 	pesel: string
 	uuid: string
 	handleDelete: (uuid: string) => void
-}> = ({ index, firstName, surname, pesel, uuid, handleDelete }) => {
+	handleEdit: (uuid: string) => void
+}> = ({ index, firstName, surname, pesel, uuid, handleDelete, handleEdit }) => {
 	const [showModal, setShowModal] = useState(false)
+
 	const getGenderFromPesel = (pesel: string): string => {
 		const genderDigit = parseInt(pesel.charAt(7))
 		return genderDigit % 2 === 0 ? 'Kobieta' : 'Mężczyzna'
@@ -56,6 +58,10 @@ const PatientItem: React.FC<{
 		setShowModal(false)
 	}
 
+	const handleEditClick = () => {
+		handleEdit(uuid)
+	}
+
 	return (
 		<div className='flex w-[1137px] h-auto text-sm lg:text-base text-black text-center ring-1 ring-black overflow-x-auto font-thin'>
 			<div className='flex flex-row justify-evenly items-center w-full h-full'>
@@ -82,7 +88,11 @@ const PatientItem: React.FC<{
 						icon={faAddressCard}
 						className='text-secondaryColor cursor-pointer hover:scale-110 transition-all'
 					/>
-					<FontAwesomeIcon icon={faPencil} className='text-yellow-500 cursor-pointer hover:scale-110 transition-all' />
+					<FontAwesomeIcon
+						icon={faPencil}
+						className='text-yellow-500 cursor-pointer hover:scale-110 transition-all'
+						onClick={handleEditClick}
+					/>
 					<FontAwesomeIcon
 						icon={faTrash}
 						className='text-red-500 cursor-pointer hover:scale-110 transition-all'
@@ -94,9 +104,13 @@ const PatientItem: React.FC<{
 				<div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center'>
 					<div className='bg-white p-8 rounded-lg'>
 						<p>{`Czy na pewno chcesz usunąć pacjenta ${firstName} ${surname}?`}</p>
-						<div className='flex justify-center gap-2 mt-4 text-sm'>
-							<Button onClick={handleConfirmDelete}>Usuń</Button>
-							<Button onClick={handleCancelDelete}>Anuluj</Button>
+						<div className='flex justify-center gap-2 mt-4  text-white'>
+							<Button onClick={handleConfirmDelete} className='sm:text-sm'>
+								Usuń
+							</Button>
+							<Button onClick={handleCancelDelete} className='sm:text-sm'>
+								Anuluj
+							</Button>
 						</div>
 					</div>
 				</div>

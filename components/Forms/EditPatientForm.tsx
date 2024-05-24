@@ -25,7 +25,7 @@ const NewPatientForm: React.FC<NewPatientFormProps> = ({ handleSubmit, submittin
 		e.preventDefault()
 
 		if (!patientData.firstName.trim() || !patientData.lastName.trim()) {
-			setError('Uzupełnij wszytskie pola formularza!')
+			setError('Uzupełnij wszystkie pola formularza!')
 			return
 		}
 
@@ -41,8 +41,8 @@ const NewPatientForm: React.FC<NewPatientFormProps> = ({ handleSubmit, submittin
 
 	return (
 		<section className='w-full mt-3 flex flex-col items-center text-black'>
-			<SectionTitle title='Nowy pacjent' />
-			<p className='mt-3 lg:text-lg text-center'>Dodaj nowego pacjenta i podaj niezbędne informacje</p>
+			<SectionTitle title='Edycja pacjenta' />
+			<p className='mt-3 lg:text-lg text-center'>Edytuj dane pacjenta poprzez zmianę jego danych osobowych</p>
 			<form onSubmit={handleFormSubmit} className='mt-3 w-full max-w-2xl flex flex-col gap-4'>
 				<label className='flex flex-col'>
 					<span className='font-semibold text-base lg:text-lg text-secondaryColor'>Imię</span>
@@ -79,7 +79,7 @@ const NewPatientForm: React.FC<NewPatientFormProps> = ({ handleSubmit, submittin
 					<Link href='/'>
 						<Button>Anuluj</Button>
 					</Link>
-					<Button disabled={submitting}>{submitting ? 'Dodawanie pacjenta...' : 'Dodaj pacjenta'}</Button>
+					<Button disabled={submitting}>{submitting ? 'Edytowanie pacjenta...' : 'Edytuj pacjenta'}</Button>
 				</div>
 			</form>
 		</section>

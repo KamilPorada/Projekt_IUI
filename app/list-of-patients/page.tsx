@@ -7,6 +7,7 @@ import PatientItem from '@/components/Items/PatientItem'
 import Button from '@/components/UI/Button'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { useRouter } from 'next/navigation'
 
 interface Patient {
 	uuid: string
@@ -24,6 +25,8 @@ const ListOfPatients: React.FC = () => {
 	const [patients, setPatients] = useState<Patient[]>([])
 	const [currentPage, setCurrentPage] = useState(1)
 	const itemsPerPage = 10
+    const router = useRouter()
+
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -65,6 +68,11 @@ const ListOfPatients: React.FC = () => {
 		}
 	}
 
+    const handleEdit = (uuid: string) =>{
+        localStorage.setItem('editedPatientUUID', uuid)
+		router.push(`/edit-patient`)
+    }
+
 	return (
 		<div className='container py-20 text-black'>
 			<SectionTitle title='Lista pacjentów' />
@@ -80,6 +88,7 @@ const ListOfPatients: React.FC = () => {
 								surname={patient.lastName}
 								pesel={patient.pesel}
 								handleDelete={handleDelete}
+                                handleEdit={handleEdit}
 								uuid={patient.uuid}
 							/>
 						))}
