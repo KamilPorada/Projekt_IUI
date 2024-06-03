@@ -38,6 +38,7 @@ function NewPatientPage() {
 		}
 
 		try {
+			console.log(JSON.stringify(patientData))
 			const response = await fetch('http://localhost:8080/patients/add', {
 				method: 'POST',
 				headers: {

@@ -47,7 +47,7 @@ function NewRoundPage() {
 				date: round.date,
 				time: round.time,
 			}
-
+			console.log(responseData)
 			localStorage.setItem('roundData', JSON.stringify(roundData))
 
 			setError('')

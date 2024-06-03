@@ -46,7 +46,7 @@ const HealthChat: React.FC = () => {
 			setMessageText('')
 
 			try {
-				const response = await fetch('http://localhost:8080/HealthBot/askQuestion', {
+				const response = await fetch('http://localhost:8080/askQuestion', {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
