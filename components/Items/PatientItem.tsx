@@ -70,33 +70,34 @@ const PatientItem: React.FC<{
 				date: '2024-06-10',
 				time: '10:00',
 				condition:
-					'Początkowo pacjent odczuwał lekki ból głowy, który stopniowo nasilał się w ciągu ostatnich kilku dni. Odczuwał także pewne zawroty głowy podczas wykonywania codziennych czynności.',
+					'Początkowo osoba odczuwała lekki ból głowy, który stopniowo nasilał się w ciągu ostatnich kilku dni. Odczuwała także pewne zawroty głowy podczas wykonywania codziennych czynności.',
 			},
 			{
 				date: '2024-06-12',
 				time: '14:30',
 				condition:
-					'Wizyta kontrolna: Po zastosowaniu zaleconych leków pacjent zauważył pewną poprawę w swoim stanie zdrowia. Ból głowy nie jest już tak uciążliwy, ale nadal występują okresy spadku nastroju.',
+					'Wizyta kontrolna: Po zastosowaniu zaleconych leków osoba zauważyła pewną poprawę w swoim stanie zdrowia. Ból głowy nie jest już tak uciążliwy, ale nadal występują okresy spadku nastroju.',
 			},
 			{
 				date: '2024-06-15',
 				time: '09:15',
 				condition:
-					'Wizyta lekarska: Pacjent odczuwa osłabienie i zmęczenie, zwłaszcza po intensywnym wysiłku fizycznym. Zalecono mu więcej odpoczynku i unikanie nadmiernego obciążenia organizmu.',
+					'Wizyta lekarska: Osoba odczuwa osłabienie i zmęczenie, zwłaszcza po intensywnym wysiłku fizycznym. Zalecono jej więcej odpoczynku i unikanie nadmiernego obciążenia organizmu.',
 			},
 			{
 				date: '2024-06-20',
 				time: '11:45',
 				condition:
-					'Wizyta kontrolna: Stan pacjenta uległ dalszej poprawie. Ból głowy jest teraz minimalny, a pacjent czuje się bardziej energiczny i gotowy do działania. Zalecono regularne ćwiczenia fizyczne i zdrową dietę.',
+					'Wizyta kontrolna: Stan zdrowia osoby uległ dalszej poprawie. Ból głowy jest teraz minimalny, a osoba czuje się bardziej energiczna i gotowa do działania. Zalecono regularne ćwiczenia fizyczne i zdrową dietę.',
 			},
 			{
 				date: '2024-06-25',
 				time: '08:00',
 				condition:
-					'Ostatnia wizyta: Pacjent zgłosił brak skarg dotyczących stanu zdrowia. Ból głowy ustąpił całkowicie, a pacjent czuje się dobrze. Zalecono regularne badania kontrolne co pół roku.',
+					'Ostatnia wizyta: Osoba zgłosiła brak skarg dotyczących stanu zdrowia. Ból głowy ustąpił całkowicie, a osoba czuje się dobrze. Zalecono regularne badania kontrolne co pół roku.',
 			},
 		]
+		
 
 		localStorage.setItem(
 			'patientData',

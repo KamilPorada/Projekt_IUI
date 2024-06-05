@@ -14,10 +14,23 @@ const RoundPatientItem: React.FC<{
 		const year = parseInt(pesel.substring(0, 2))
 		const month = parseInt(pesel.substring(2, 4))
 		const day = parseInt(pesel.substring(4, 6))
-		const fullYear = year < 20 ? 2000 + year : 1900 + year
+
+		let fullYear
+		if (year >= 0 && year <= 19) {
+			fullYear = 1900 + year
+		} else if (year >= 20 && year <= 99) {
+			fullYear = 2000 + year
+		} else if (year >= 1800 && year <= 1899) {
+			fullYear = 1800 + year
+		} else {
+			throw new Error('Nieprawidłowy numer PESEL')
+		}
+
+		const centuryOffset = Math.floor(month / 20) * 100
+		const formattedMonth = (month % 20).toString().padStart(2, '0')
 		const formattedDay = day.toString().padStart(2, '0')
-		const formattedMonth = month.toString().padStart(2, '0')
-		return `${formattedDay}.${formattedMonth}.${fullYear}`
+
+		return `${formattedDay}.${formattedMonth}.${fullYear + centuryOffset}`
 	}
 
 	const gender = getGenderFromPesel(props.pesel)

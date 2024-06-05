@@ -12,6 +12,7 @@ interface RoundDataProps {
 }
 
 interface PatientData {
+	uuid: string
 	firstName: string
 	surname: string
 	pesel: string
@@ -20,14 +21,45 @@ interface PatientData {
 	roundData: RoundDataProps[]
 }
 
+interface PatientRecord {
+	uuid: string
+	patient: {
+		uuid: string
+		firstName: string
+		lastName: string
+		pesel: string
+	}
+	patientStatus: string
+	audioFile: string | null
+	roundDate: string
+	roundTime: string
+}
+
 const PatientCard: React.FC = () => {
 	const [patientData, setPatientData] = useState<PatientData | null>(null)
 	const [age, setAge] = useState<number | null>(null)
+	const [records, setRecords] = useState<PatientRecord[]>()
 	const router = useRouter()
 
-    const handleComeBack = () =>{
-        router.push('/list-of-patients')
-    }
+	const handleComeBack = () => {
+		router.push('/list-of-patients')
+	}
+
+	const fetchData = async (uuid: string) => {
+		console.log(uuid)
+		try {
+			const response = await fetch(`http://localhost:8080/records/patient/${uuid}`)
+			if (!response.ok) {
+				throw new Error('Network response was not ok')
+			}
+			const data = await response.json()
+			if (data.status === 'ok') {
+				setRecords(data.RecordList)
+			}
+		} catch (error) {
+			console.error('There was a problem with the fetch operation:', error)
+		}
+	}
 
 	useEffect(() => {
 		const storedPatientData = localStorage.getItem('patientData')
@@ -39,6 +71,7 @@ const PatientCard: React.FC = () => {
 			const currentYear = new Date().getFullYear()
 			const calculatedAge = currentYear - birthYear
 			setAge(calculatedAge)
+			fetchData(parsedPatientData.uuid)
 		}
 	}, [])
 
@@ -49,7 +82,7 @@ const PatientCard: React.FC = () => {
 					<FontAwesomeIcon
 						icon={faRotateLeft}
 						className='absolute top-3 left-3 cursor-pointer font-bold text-blue-600 text-xl transition-all hover:scale-110'
-                        onClick={handleComeBack}
+						onClick={handleComeBack}
 					/>
 					<div className='flex flex-col justify-between items-start mb-4'>
 						<h2 className='text-2xl font-bold text-black'>
@@ -69,9 +102,9 @@ const PatientCard: React.FC = () => {
 					</div>
 					<div className='flex flex-col gap-3 justify-between mt-4'>
 						<p className='font-bold'>Karta pacjenta</p>
-						{patientData.roundData.map((round, index) => (
-							<RoundItem key={index} date={round.date} time={round.time} condition={round.condition} />
-						))}
+						{records?.map((recordItem, index) => (
+                            <RoundItem key={index} date={recordItem.roundDate} time={recordItem.roundTime} condition={recordItem.patientStatus} />
+                        ))}
 					</div>
 				</div>
 			) : (

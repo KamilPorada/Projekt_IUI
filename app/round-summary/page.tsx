@@ -32,10 +32,40 @@ const RoundSummary = () => {
 
 	const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
 
-	const handleSaveData = () => {
-		toast.info('Pomyślnie zapisano dane z obchodu do kart pacjentów!', {
-			position: 'top-center',
-		})
+	const handleSaveData = async () => {
+		for (const patient of patients) {
+			const patientData = {
+				patientId: patient.id,
+				lastName: patient.lastName,
+				firstName: patient.firstName,
+				pesel: patient.pesel,
+				state: patient.text,
+				roundDate: roundDate,
+				roundTime: roundTime,
+			}
+
+			try {
+				const response = await fetch('http://localhost:8080/records/add', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(patientData),
+				})
+
+				if (response.ok) {
+					toast.info('Pomyślnie zapisano dane z obchodu do kart pacjentów!', {
+						position: 'top-center',
+					})
+				}
+
+				if (!response.ok) {
+					throw new Error('Network response was not ok')
+				}
+			} catch (error) {
+				console.error('There was a problem with the fetch operation:', error)
+			}
+		}
 	}
 
 	return (
