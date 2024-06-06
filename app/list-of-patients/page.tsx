@@ -6,6 +6,8 @@ import PatientItem from '@/components/Items/PatientItem'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useRouter } from 'next/navigation'
+import { useMsal } from '@azure/msal-react'
+import { AccountInfo } from '@azure/msal-browser'
 
 interface Patient {
 	uuid: string
@@ -20,28 +22,47 @@ interface PatientListResponse {
 }
 
 const ListOfPatients: React.FC = () => {
+	const [userId, setUserId] = useState<string>('')
 	const [patients, setPatients] = useState<Patient[]>([])
 	const [currentPage, setCurrentPage] = useState(1)
 	const itemsPerPage = 10
-    const router = useRouter()
-
+	const router = useRouter()
+	const { instance, accounts } = useMsal()
 
 	useEffect(() => {
-		const fetchData = async () => {
+		const fetchPatients = async () => {
 			try {
-				const response = await fetch('http://localhost:8080/patients/all')
-				if (!response.ok) {
-					throw new Error('Failed to fetch patients')
+				const response = await instance.acquireTokenSilent({
+					scopes: ['User.Read'],
+					account: accounts[0] as AccountInfo,
+				})
+
+				const idToken = response.idToken
+				const token = idToken
+				setUserId(token)
+				console.log(token)
+
+				const responsePatients = await fetch('http://localhost:8080/patients/all', {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${token}`,
+					},
+				})
+
+				if (!responsePatients.ok) {
+					throw new Error('Network response was not ok')
 				}
-				const data: PatientListResponse = await response.json()
+
+				const data = await responsePatients.json()
 				setPatients(data.patientList)
 			} catch (error) {
-				console.error('Error fetching patients:', error)
+				console.error('Wystąpił błąd podczas pobierania danych pacjentów:', error)
 			}
 		}
 
-		fetchData()
-	}, [])
+		fetchPatients()
+	}, [instance, accounts])
 
 	const indexOfLastItem = currentPage * itemsPerPage
 	const indexOfFirstItem = indexOfLastItem - itemsPerPage
@@ -51,8 +72,18 @@ const ListOfPatients: React.FC = () => {
 
 	const handleDelete = async (uuid: string) => {
 		try {
+			const responseToken = await instance.acquireTokenSilent({
+				scopes: ['User.Read'],
+				account: accounts[0] as AccountInfo,
+			})
+
+			const token = responseToken.idToken
+
 			const response = await fetch(`http://localhost:8080/patients/del/${uuid}`, {
 				method: 'DELETE',
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
 			})
 			if (!response.ok) {
 				throw new Error('Failed to delete patient')
@@ -66,10 +97,10 @@ const ListOfPatients: React.FC = () => {
 		}
 	}
 
-    const handleEdit = (uuid: string) =>{
-        localStorage.setItem('editedPatientUUID', uuid)
+	const handleEdit = (uuid: string) => {
+		localStorage.setItem('editedPatientUUID', uuid)
 		router.push(`/edit-patient`)
-    }
+	}
 
 	return (
 		<div className='container py-20 text-black'>
@@ -86,7 +117,7 @@ const ListOfPatients: React.FC = () => {
 								surname={patient.lastName}
 								pesel={patient.pesel}
 								handleDelete={handleDelete}
-                                handleEdit={handleEdit}
+								handleEdit={handleEdit}
 								uuid={patient.uuid}
 							/>
 						))}

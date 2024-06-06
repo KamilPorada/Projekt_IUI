@@ -8,13 +8,17 @@ import RoundPatientItem from '@/components/Items/RoundPatientItem'
 import Button from '@/components/UI/Button'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { useMsal } from '@azure/msal-react'
+import { AccountInfo } from '@azure/msal-browser'
 
 const RoundSummary = () => {
+	const [userId, setUserId] = useState<string>('')
 	const [patients, setPatients] = useState<any[]>([])
 	const [roundDate, setRoundDate] = useState<string>()
 	const [roundTime, setroundTime] = useState<string>()
 	const itemsPerPage = 10
 	const [currentPage, setCurrentPage] = useState(1)
+	const { instance, accounts } = useMsal()
 
 	useEffect(() => {
 		const data = localStorage.getItem('roundData')
@@ -49,6 +53,7 @@ const RoundSummary = () => {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
+						Authorization: `Bearer ${userId}`,
 					},
 					body: JSON.stringify(patientData),
 				})
@@ -67,6 +72,23 @@ const RoundSummary = () => {
 			}
 		}
 	}
+
+	useEffect(() => {
+		instance
+			.acquireTokenSilent({
+				scopes: ['User.Read'],
+				account: accounts[0] as AccountInfo,
+			})
+			.then(response => {
+				const idToken = response.idToken
+
+				sessionStorage.setItem('idToken', idToken)
+				setUserId(idToken)
+			})
+			.catch(error => {
+				console.error(error)
+			})
+	}, [])
 
 	return (
 		<section className='container py-20'>

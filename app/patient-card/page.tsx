@@ -1,9 +1,12 @@
 'use client'
+
 import { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMale, faFemale, faRotateLeft } from '@fortawesome/free-solid-svg-icons'
 import RoundItem from '@/components/Items/RoundItem'
 import { useRouter } from 'next/navigation'
+import { PublicClientApplication, AccountInfo } from '@azure/msal-browser'
+import { msalConfig } from '../authConfig'
 
 interface RoundDataProps {
 	date: string
@@ -35,7 +38,10 @@ interface PatientRecord {
 	roundTime: string
 }
 
+const msalInstance = new PublicClientApplication(msalConfig)
+
 const PatientCard: React.FC = () => {
+	const [user, setUser] = useState<AccountInfo | null>(null)
 	const [patientData, setPatientData] = useState<PatientData | null>(null)
 	const [age, setAge] = useState<number | null>(null)
 	const [records, setRecords] = useState<PatientRecord[]>()
@@ -46,9 +52,19 @@ const PatientCard: React.FC = () => {
 	}
 
 	const fetchData = async (uuid: string) => {
-		console.log(uuid)
 		try {
-			const response = await fetch(`http://localhost:8080/records/patient/${uuid}`)
+			const responseToken = await msalInstance.acquireTokenSilent({
+				scopes: ['User.Read'],
+				account: user as AccountInfo,
+			})
+
+			const token = responseToken.idToken
+
+			const response = await fetch(`http://localhost:8080/records/patient/${uuid}`, {
+				headers: {
+					'Authorization': `Bearer ${token}`,
+				},
+			})
 			if (!response.ok) {
 				throw new Error('Network response was not ok')
 			}
@@ -62,18 +78,37 @@ const PatientCard: React.FC = () => {
 	}
 
 	useEffect(() => {
+		const initializeMsal = async () => {
+			try {
+				await msalInstance.initialize()
+				const accounts = msalInstance.getAllAccounts()
+				if (accounts.length > 0) {
+					setUser(accounts[0])
+				}
+			} catch (error) {
+				console.error('Błąd podczas inicjalizacji MSAL:', error)
+			}
+		}
+
+		initializeMsal()
+	}, [])
+
+	useEffect(() => {
 		const storedPatientData = localStorage.getItem('patientData')
 		if (storedPatientData) {
 			const parsedPatientData = JSON.parse(storedPatientData) as PatientData
 			setPatientData(parsedPatientData)
 
-			const birthYear = parseInt(parsedPatientData.birthDate.slice(-4), 10)
+			const birthYear = parseInt(parsedPatientData.birthDate.slice(0, 4), 10)
 			const currentYear = new Date().getFullYear()
 			const calculatedAge = currentYear - birthYear
 			setAge(calculatedAge)
-			fetchData(parsedPatientData.uuid)
+
+			if (user) {
+				fetchData(parsedPatientData.uuid)
+			}
 		}
-	}, [])
+	}, [user])
 
 	return (
 		<div className='container py-20 text-black flex justify-center items-center'>
@@ -103,8 +138,8 @@ const PatientCard: React.FC = () => {
 					<div className='flex flex-col gap-3 justify-between mt-4'>
 						<p className='font-bold'>Karta pacjenta</p>
 						{records?.map((recordItem, index) => (
-                            <RoundItem key={index} date={recordItem.roundDate} time={recordItem.roundTime} condition={recordItem.patientStatus} />
-                        ))}
+							<RoundItem key={index} date={recordItem.roundDate} time={recordItem.roundTime} condition={recordItem.patientStatus} />
+						))}
 					</div>
 				</div>
 			) : (

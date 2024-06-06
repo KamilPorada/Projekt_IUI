@@ -14,37 +14,12 @@ import {
     faHandHoldingMedical,
 } from '@fortawesome/free-solid-svg-icons';
 import { useMsal } from '@azure/msal-react';
-import { AccountInfo } from '@azure/msal-browser';
 
 const SideBar: React.FC = () => {
     const [isMenuVisible, setIsMenuVisible] = useState(true);
     const { instance, accounts } = useMsal();
     const currentYear = new Date().getFullYear();
 
-    // useEffect(() => {
-    //     if (accounts.length > 0) {
-    //         instance.acquireTokenSilent({
-    //             scopes: ["User.Read"], 
-    //             account: accounts[0] as AccountInfo
-    //         }).then(response => {
-    //             const idToken = response.idToken;
-
-    //             sessionStorage.setItem("idToken", idToken);
-    //             console.log(idToken);
-
-    //             fetch("/api/auth", {
-    //                 method: "POST",
-    //                 headers: {
-    //                     "Content-Type": "application/json",
-    //                     "Authorization": `Bearer ${idToken}`
-    //                 },
-    //                 body: JSON.stringify({ token: idToken })
-    //             });
-    //         }).catch(error => {
-    //             console.error(error);
-    //         });
-    //     }
-    // }, [accounts, instance]);
 
     const handleMenuButton = (): void => {
         setIsMenuVisible(true);

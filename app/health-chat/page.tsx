@@ -1,9 +1,10 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import HealthBotLogo from '../../public/img/health-bot-logo.svg'
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import MessageItem from '@/components/Items/MessageItem'
+import { AccountInfo } from '@azure/msal-browser'
 import { useMsal } from '@azure/msal-react'
 
 interface Message {
@@ -14,9 +15,10 @@ interface Message {
 }
 
 const HealthChat: React.FC = () => {
-	const { accounts } = useMsal()
+	const [userId, setUserId] = useState<string>('')
 	const [messages, setMessages] = useState<Message[]>([])
 	const [messageText, setMessageText] = useState<string>('')
+	const { instance, accounts } = useMsal()
 
 	const getCurrentTime = (): string => {
 		const date = new Date()
@@ -50,6 +52,7 @@ const HealthChat: React.FC = () => {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
+						Authorization: `Bearer ${userId}`,
 					},
 					body: JSON.stringify({ question: messageText }),
 				})
@@ -74,6 +77,23 @@ const HealthChat: React.FC = () => {
 			handleSendMessage()
 		}
 	}
+
+	useEffect(() => {
+		instance
+			.acquireTokenSilent({
+				scopes: ['User.Read'],
+				account: accounts[0] as AccountInfo,
+			})
+			.then(response => {
+				const idToken = response.idToken
+
+				sessionStorage.setItem('idToken', idToken)
+				setUserId(idToken)
+			})
+			.catch(error => {
+				console.error(error)
+			})
+	}, [])
 
 	return (
 		<div className='flex justify-center items-center w-screen h-screen'>

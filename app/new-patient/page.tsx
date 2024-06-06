@@ -2,15 +2,14 @@
 
 import { useState, useEffect, FormEvent } from 'react'
 import NewPatientForm from '../../components/Forms/NewPatientForm'
-import { PublicClientApplication, AccountInfo } from '@azure/msal-browser'
-import { msalConfig } from '../authConfig'
+import { AccountInfo } from '@azure/msal-browser'
 import { useRouter } from 'next/navigation'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { useMsal } from '@azure/msal-react'
 
 function NewPatientPage() {
-	const [user, setUser] = useState<AccountInfo | null>(null)
-	const [userId, setUserId] = useState<string | null>(null)
+	const [userId, setUserId] = useState<string>('')
 	const [patientData, setPatientData] = useState({
 		firstName: '',
 		lastName: '',
@@ -19,7 +18,7 @@ function NewPatientPage() {
 	const [submitting, setIsSubmitting] = useState(false)
 	const [error, setError] = useState('')
 	const router = useRouter()
-	const msalInstance = new PublicClientApplication(msalConfig)
+	const { instance, accounts } = useMsal()
 
 	const addPatient = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
@@ -38,11 +37,11 @@ function NewPatientPage() {
 		}
 
 		try {
-			console.log(JSON.stringify(patientData))
 			const response = await fetch('http://localhost:8080/patients/add', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
+					Authorization: `Bearer ${userId}`,
 				},
 				body: JSON.stringify(patientData),
 			})
@@ -76,19 +75,20 @@ function NewPatientPage() {
 	}
 
 	useEffect(() => {
-		const checkUserLoggedIn = async () => {
-			try {
-				const accounts = msalInstance.getAllAccounts()
-				if (accounts.length > 0) {
-					setUser(accounts[0])
-					setUserId(accounts[0].homeAccountId.split('.').pop() || null)
-				}
-			} catch (error) {
-				console.error('Błąd podczas sprawdzania stanu zalogowania użytkownika:', error)
-			}
-		}
+		instance
+			.acquireTokenSilent({
+				scopes: ['User.Read'],
+				account: accounts[0] as AccountInfo,
+			})
+			.then(response => {
+				const idToken = response.idToken
 
-		checkUserLoggedIn()
+				sessionStorage.setItem('idToken', idToken)
+				setUserId(idToken)
+			})
+			.catch(error => {
+				console.error(error)
+			})
 	}, [])
 
 	return (

@@ -7,9 +7,10 @@ import { msalConfig } from '../authConfig'
 import { useRouter } from 'next/navigation'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { useMsal } from '@azure/msal-react'
+
 
 function NewRoundPage() {
-	const [user, setUser] = useState<AccountInfo | null>(null)
 	const [userId, setUserId] = useState<string | null>(null)
 	const [round, setRound] = useState({
 		date: new Date().toISOString().slice(0, 10),
@@ -20,6 +21,7 @@ function NewRoundPage() {
 	const [error, setError] = useState('')
 	const router = useRouter()
 	const msalInstance = new PublicClientApplication(msalConfig)
+	const { instance, accounts } = useMsal()
 
 	const addRound = async (e: FormEvent<HTMLFormElement>, fileContent: File) => {
 		e.preventDefault()
@@ -38,6 +40,10 @@ function NewRoundPage() {
 
 			const response = await fetch('http://localhost:8080/upload/audio', {
 				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${userId}`,
+				},
 				body: formData,
 			})
 
@@ -86,19 +92,20 @@ function NewRoundPage() {
 	}
 
 	useEffect(() => {
-		const checkUserLoggedIn = async () => {
-			try {
-				const accounts = msalInstance.getAllAccounts()
-				if (accounts.length > 0) {
-					setUser(accounts[0])
-					setUserId(accounts[0].homeAccountId.split('.').pop() || null)
-				}
-			} catch (error) {
-				console.error('Błąd podczas sprawdzania stanu zalogowania użytkownika:', error)
-			}
-		}
+		instance
+			.acquireTokenSilent({
+				scopes: ['User.Read'],
+				account: accounts[0] as AccountInfo,
+			})
+			.then(response => {
+				const idToken = response.idToken
 
-		checkUserLoggedIn()
+				sessionStorage.setItem('idToken', idToken)
+				setUserId(idToken)
+			})
+			.catch(error => {
+				console.error(error)
+			})
 	}, [])
 
 	return (

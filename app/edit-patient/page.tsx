@@ -8,6 +8,8 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
+const msalInstance = new PublicClientApplication(msalConfig)
+
 function EditPatientPage() {
 	const [user, setUser] = useState<AccountInfo | null>(null)
 	const [userId, setUserId] = useState<string | null>(null)
@@ -19,7 +21,6 @@ function EditPatientPage() {
 	const [submitting, setIsSubmitting] = useState(false)
 	const [error, setError] = useState('')
 	const router = useRouter()
-	const msalInstance = new PublicClientApplication(msalConfig)
 
 	const editPatient = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
@@ -36,14 +37,23 @@ function EditPatientPage() {
 			setIsSubmitting(false)
 			return
 		}
+
 		const editedPatientUUID = localStorage.getItem('editedPatientUUID')
 		try {
+			const responseToken = await msalInstance.acquireTokenSilent({
+				scopes: ['User.Read'],
+				account: user as AccountInfo,
+			})
+
+			const token = responseToken.idToken
+
 			const response = await fetch(`http://localhost:8080/patients/update/${editedPatientUUID}`, {
-				method: 'PUT', 
+				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json',
+					'Authorization': `Bearer ${token}`,
 				},
-				body: JSON.stringify(patientData), 
+				body: JSON.stringify(patientData),
 			})
 
 			if (response.ok) {
@@ -75,26 +85,38 @@ function EditPatientPage() {
 	}
 
 	useEffect(() => {
-		const checkUserLoggedIn = async () => {
+		const initializeMsal = async () => {
 			try {
+				await msalInstance.initialize()
 				const accounts = msalInstance.getAllAccounts()
 				if (accounts.length > 0) {
 					setUser(accounts[0])
 					setUserId(accounts[0].homeAccountId.split('.').pop() || null)
 				}
 			} catch (error) {
-				console.error('Błąd podczas sprawdzania stanu zalogowania użytkownika:', error)
+				console.error('Błąd podczas inicjalizacji MSAL:', error)
 			}
 		}
 
-		checkUserLoggedIn()
+		initializeMsal()
 	}, [])
 
 	useEffect(() => {
 		const fetchPatientData = async () => {
 			const editedPatientUUID = localStorage.getItem('editedPatientUUID')
 			try {
-				const response = await fetch(`http://localhost:8080/patients/${editedPatientUUID}`)
+				const responseToken = await msalInstance.acquireTokenSilent({
+					scopes: ['User.Read'],
+					account: user as AccountInfo,
+				})
+
+				const token = responseToken.idToken
+
+				const response = await fetch(`http://localhost:8080/patients/${editedPatientUUID}`, {
+					headers: {
+						'Authorization': `Bearer ${token}`,
+					},
+				})
 				if (!response.ok) {
 					throw new Error('Failed to fetch patient data')
 				}
@@ -116,8 +138,10 @@ function EditPatientPage() {
 			}
 		}
 
-		fetchPatientData()
-	}, [])
+		if (user) {
+			fetchPatientData()
+		}
+	}, [user])
 
 	return (
 		<section className='container py-20'>
