@@ -43,7 +43,6 @@ const msalInstance = new PublicClientApplication(msalConfig)
 const PatientCard: React.FC = () => {
 	const [user, setUser] = useState<AccountInfo | null>(null)
 	const [patientData, setPatientData] = useState<PatientData | null>(null)
-	const [age, setAge] = useState<number | null>(null)
 	const [records, setRecords] = useState<PatientRecord[]>()
 	const router = useRouter()
 
@@ -99,11 +98,6 @@ const PatientCard: React.FC = () => {
 			const parsedPatientData = JSON.parse(storedPatientData) as PatientData
 			setPatientData(parsedPatientData)
 
-			const birthYear = parseInt(parsedPatientData.birthDate.slice(0, 4), 10)
-			const currentYear = new Date().getFullYear()
-			const calculatedAge = currentYear - birthYear
-			setAge(calculatedAge)
-
 			if (user) {
 				fetchData(parsedPatientData.uuid)
 			}
@@ -125,7 +119,6 @@ const PatientCard: React.FC = () => {
 						</h2>
 						<p className='text-lg'>PESEL: {patientData.pesel}</p>
 						<p className='text-lg'>Data urodzenia: {patientData.birthDate}</p>
-						<p className='text-lg'>Wiek: {age}</p>
 						<div className='text-lg'>
 							{patientData.gender === 'Mężczyzna' ? (
 								<FontAwesomeIcon icon={faMale} className='text-blue-500 mr-2' />
