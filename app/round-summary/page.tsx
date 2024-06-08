@@ -41,7 +41,7 @@ const RoundSummary = () => {
 			const patientData = {
 				patientId: patient.id,
 				lastName: patient.lastName,
-				firstName: patient.firstName,
+				firstName: patient.name,
 				pesel: patient.pesel,
 				state: patient.text,
 				roundDate: roundDate,
