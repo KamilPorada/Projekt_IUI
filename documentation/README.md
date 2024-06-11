@@ -12,7 +12,7 @@ Spis Treści
 7.  Struktura bazy danych
 8.  Instrukcja uruchomienia
 9.  Architektura systemu
-10. Usługi Azure
+
 
 * * * * *
 
@@ -97,6 +97,13 @@ Użyte technologie oraz biblioteki
 -   React
 -   NextJS
 -   Tailwindcss
+
+### Wykorzystane usługi Azure
+
+1.  Azure Health Bot
+2.  Azure Speech to text
+3.  Azure Entra
+
 
 Interfejs użytkownika
 ---------------------
@@ -198,7 +205,32 @@ venv\Scripts\activate
 source venv/bin/activate
 pip install -r requirements.txt `
 
-4.  Uruchomienie aplikacji
+
+4.  Konfiguracja
+
+W pliku 
+`/src/main/resources/application-prod.properties`
+
+![alt text](image-19.png)
+
+Ustawić w następujących linijkach:
+
+`spring.datasource.password` - hasło do bazy danych
+
+`Speech.Key = {your_key}` - ustawienia usługi mowy
+
+`Speech.Region = {your region}` - ustawienia usługi mowy
+
+`Speech.Language = pl-PL` - ustawienia usługi mowy 
+
+`spring.security.oauth2.resourceserver.jwt.audiences= {clientID}` - ustawienia azure entra
+
+`HealthBot.Secret  = {your health bot direct-line secret}` klucz usługi health bot
+
+
+
+
+5.  Uruchomienie aplikacji
 
 bash
 
@@ -253,13 +285,4 @@ System Health Assistant jest zbudowany z wykorzystaniem nowoczesnych technologii
     -   **Azure Speech to Text:** Przekształca nagrania z obchodu lekarskiego na tekst, który jest następnie analizowany i przypisywany do odpowiednich pacjentów.
     -   **Azure Entra:** Zapewnia zarządzanie tożsamościami i kontrolę dostępu, dbając o bezpieczeństwo i prywatność użytkowników.
 
-Usługi Azure
-------------
 
-### Użyte usługi Azure
-
-W projekcie "HealthBOOT" wykorzystano następujące usługi Azure:
-
-1.  Azure Health Bot
-2.  Azure Speech to text
-3.  Azure Entra
